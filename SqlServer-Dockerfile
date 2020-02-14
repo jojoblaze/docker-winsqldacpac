@@ -1,0 +1,35 @@
+
+# escape=`
+
+FROM microsoft/mssql-server-windows-developer
+
+
+ARG SA_PASSWORD
+ARG ACCEPT_EULA
+
+ENV SA_PASSWORD=$SA_PASSWORD
+ENV ACCEPT_EULA=$ACCEPT_EULA
+
+
+WORKDIR /tmp
+
+# COPY dacpac file into container
+ADD ./MSSQLDB/Snapshots/MSSQLDB.dacpac ./
+
+# download SqlPackage from Microsoft and install
+RUN powershell.exe -Command \
+   $ErrorActionPreference = 'Stop'; \
+   $ProgressPreference = 'SilentlyContinue'; \
+   Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=2113703 -OutFile c:\tmp\DacFramework.msi -UseBasicParsing ; \
+   Start-Process c:\tmp\DacFramework.msi -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; \
+   Remove-Item c:\tmp\DacFramework.msi -Force
+
+# run dacpac import
+RUN powershell.exe -Command \
+   Start-Process "`"C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe`"" -ArgumentList "/Action:Publish", "/SourceFile:`"c:\tmp\MSSQLDB.dacpac`"", "/TargetDatabaseName:`"MSSQLDB`"", "/TargetServerName:`"localhost`"" -Wait
+   
+
+WORKDIR /
+
+
+EXPOSE 1433
