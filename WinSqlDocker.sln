@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DATABASE", "DATABASE", "{70
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{E7CB142B-D8B2-4239-BA12-4DAE24C64AF1}"
 	ProjectSection(SolutionItems) = preProject
-		MSSQL-builder-Dockerfile = MSSQL-builder-Dockerfile
+		MSSQL-Dockerfile = MSSQL-Dockerfile
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{2713BF06-15C2-4352-AA4E-4F3B0AAF1A29}"

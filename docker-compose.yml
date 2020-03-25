@@ -11,7 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}mssqldb
     build:
       context: .
-      dockerfile: ./SqlServer-Dockerfile
+      dockerfile: ./MSSQL-Dockerfile
       args:
         ACCEPT_EULA: ${ACCEPT_EULA}
         SA_PASSWORD: ${SA_PASSWORD}
