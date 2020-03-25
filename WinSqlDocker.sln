@@ -6,15 +6,28 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MSSQLDB", "MSSQLDB\MSSQLDB.sqlproj", "{89B114A7-7FE2-4AE6-9A1D-83F86339E41C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DATABASE", "DATABASE", "{70D499A2-9E4C-4184-BC8C-AB00691A24CF}"
+	ProjectSection(SolutionItems) = preProject
+		Initialize-Database.ps1 = Initialize-Database.ps1
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{E7CB142B-D8B2-4239-BA12-4DAE24C64AF1}"
 	ProjectSection(SolutionItems) = preProject
-		SqlServer-Dockerfile = SqlServer-Dockerfile
+		MSSQL-builder-Dockerfile = MSSQL-builder-Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{2713BF06-15C2-4352-AA4E-4F3B0AAF1A29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{2713BF06-15C2-4352-AA4E-4F3B0AAF1A29}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FF0499D1-3300-466D-82FB-95231B431920}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBUILD", "MSBUILD", "{82490709-8F06-460A-B239-ED9C57A54EA5}"
+	ProjectSection(SolutionItems) = preProject
+		netfx-4.7.2-ssdt-Dockerfile = netfx-4.7.2-ssdt-Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5F34CEF-FDBE-4FAC-BD74-BE64BB1C0BDA}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

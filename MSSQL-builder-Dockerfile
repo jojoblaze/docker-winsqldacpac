@@ -1,0 +1,41 @@
+
+# escape=\
+
+FROM ssdtbuild:latest AS builder
+
+
+
+WORKDIR c:\\src\\MSSQL
+
+COPY ./MSSQLDB .
+
+# Generate dacpac file
+RUN msbuild MSSQLDB.sqlproj \
+   /p:SQLDBExtensionsRefPath="C:\Microsoft.Data.Tools.Msbuild.10.0.61804.210\lib\net46" \
+   /p:SqlServerRedistPath="C:\Microsoft.Data.Tools.Msbuild.10.0.61804.210\lib\net46"
+
+
+FROM microsoft/mssql-server-windows-express
+
+ENV ACCEPT_EULA="Y" \
+   DATA_PATH="C:\data" \
+   sa_password="ABCdef123!$%"
+
+VOLUME ${DATA_PATH} 
+
+
+WORKDIR /tmp
+
+# download SqlPackage from Microsoft and install
+RUN powershell.exe -Command \
+   Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=2113703 -OutFile c:\tmp\DacFramework.msi -UseBasicParsing ; \
+   Start-Process c:\tmp\DacFramework.msi -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; \
+   Remove-Item c:\tmp\DacFramework.msi -Force
+
+
+WORKDIR C:\\init
+
+COPY Initialize-Database.ps1 .
+CMD powershell ./Initialize-Database.ps1 -sa_password $env:sa_password -data_path $env:DATA_PATH -Verbose
+
+COPY --from=builder C:\\src\\MSSQL\\bin\\Debug\\MSSQLDB.dacpac .

@@ -1,0 +1,8 @@
+# escape=\
+
+# create base builder image with MS Sql Server Data Tools
+
+FROM microsoft/dotnet-framework:4.7.2-sdk-20180814-windowsservercore-ltsc2016
+
+RUN nuget install Microsoft.Data.Tools.Msbuild -Version 10.0.61804.210
+
