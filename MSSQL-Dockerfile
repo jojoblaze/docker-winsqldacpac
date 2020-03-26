@@ -36,6 +36,6 @@ RUN powershell.exe -Command \
 WORKDIR C:\\init
 
 COPY Initialize-Database.ps1 .
-CMD powershell ./Initialize-Database.ps1 -sa_password $env:sa_password -data_path $env:DATA_PATH -Verbose
+CMD powershell ./Initialize-Database.ps1 -sa_password $env:sa_password -db_name MSSQLDB -data_path $env:DATA_PATH -Verbose
 
 COPY --from=builder C:\\src\\MSSQL\\bin\\Debug\\MSSQLDB.dacpac .

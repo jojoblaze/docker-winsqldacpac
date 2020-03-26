@@ -4,6 +4,9 @@ param(
 [string]$sa_password,
 
 [Parameter(Mandatory=$false)]
+[string]$db_name,
+
+[Parameter(Mandatory=$false)]
 [string]$data_path
 )
 
@@ -20,13 +23,13 @@ if($sa_password -ne "_")
     & sqlcmd -Q $sqlcmd
 }
 
-$mdfPath = "$data_path\MSSQLDB.mdf"
-$ldfPath = "$data_path\MSSQLDB.ldf"
+$mdfPath = "$data_path\$db_name.mdf"
+$ldfPath = "$data_path\$db_name.ldf"
 
 # ----
 
 if ((Test-Path $mdfPath) -eq $true) {
-    $sqlcmd = "IF DB_ID('MSSQLDB') IS NULL BEGIN CREATE DATABASE MSSQLDB ON (FILENAME = N'$mdfPath')"
+    $sqlcmd = "IF DB_ID('$db_name') IS NULL BEGIN CREATE DATABASE MSSQLDB ON (FILENAME = N'$mdfPath')"
     if ((Test-Path $ldfPath) -eq $true) {
         $sqlcmd = "$sqlcmd, (FILENAME = N'$ldfPath')"
     }
@@ -41,11 +44,11 @@ if ((Test-Path $mdfPath) -eq $true) {
 $SqlPackagePath = 'C:\\Program Files\\Microsoft SQL Server\\150\\DAC\\bin\\SqlPackage.exe'
 
 & $SqlPackagePath `
-    /sf:MSSQLDB.dacpac `
+    /sf:$db_name.dacpac `
     /a:script /op:deploy.sql /p:CommentOutSetVarDeclarations=true `
-    /tsn:.\SQLEXPRESS /tdn:MSSQLDB /tu:sa /tp:$sa_password
+    /tsn:.\SQLEXPRESS /tdn:$db_name /tu:sa /tp:$sa_password
 
-$SqlCmdVars = "DatabaseName=MSSQLDB", "DefaultFilePrefix=MSSQLDB", "DefaultDataPath=$data_path\", "DefaultLogPath=$data_path\"
+$SqlCmdVars = "DatabaseName=$db_name", "DefaultFilePrefix=$db_name", "DefaultDataPath=$data_path\", "DefaultLogPath=$data_path\"
 Invoke-SqlCmd -InputFile deploy.sql -Variable $SqlCmdVars -Verbose
 
 Write-Verbose "Deployed MSSQLDB database, data files at: $data_path"
