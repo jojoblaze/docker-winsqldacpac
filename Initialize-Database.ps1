@@ -23,11 +23,11 @@ if($sa_password -ne "_")
     & sqlcmd -Q $sqlcmd
 }
 
-$mdfPath = "$data_path\$db_name.mdf"
-$ldfPath = "$data_path\$db_name.ldf"
+$mdfPath = "$data_path\${db_name}_Primary.mdf"
+$ldfPath = "$data_path\${db_name}_Primary.ldf"
 
 # ----
-
+Write-Verbose "Check if database already exists on path $mdfPath"
 if ((Test-Path $mdfPath) -eq $true) {
     $sqlcmd = "IF DB_ID('$db_name') IS NULL BEGIN CREATE DATABASE MSSQLDB ON (FILENAME = N'$mdfPath')"
     if ((Test-Path $ldfPath) -eq $true) {
@@ -35,6 +35,7 @@ if ((Test-Path $mdfPath) -eq $true) {
     }
     $sqlcmd = "$sqlcmd FOR ATTACH; END"
     Write-Verbose 'Data files exists = will attach and upgrade database'
+    Invoke-Sqlcmd -Query $sqlcmd -ServerInstance ".\SQLEXPRESS"
 } else {
     Write-Verbose 'No data files = will create a new database'
 }

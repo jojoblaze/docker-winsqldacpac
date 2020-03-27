@@ -29,3 +29,11 @@ MS-SQL docker image has strength password policy. Make sure to use a sa_password
 `
 Example: ABCdef123!$%
 `
+
+## TIPS
+
+#### Run sql command from powershell
+`
+docker container exec [container id] powershell
+"Invoke-SqlCmd -Query 'SELECT * FROM [TABLE]' -Database [DBNAME]"
+`
